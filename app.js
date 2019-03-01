@@ -11,6 +11,7 @@ const _ = require('lodash');
 const upload = multer();
 const app = express()
 const PORT = 4000;
+const portFront = 4200;
 
 
 
@@ -53,7 +54,7 @@ const userModel = new User({
 
 
 // Allow Origin Host
-app.use(cors({ origin: 'http://localhost:1013' }));
+app.use(cors({ origin: `http://localhost:${portFront}` }));
 
 const TODOS = [
     { 'id': 1, 'user_id': 1, 'name': "Get Milk", 'completed': false },
@@ -68,8 +69,8 @@ const USERS = [
 ];
 
 const formations = [];
-  for (let i = 1; i <= 10; i++) {
-      const formation = {
+for (let i = 1; i <= 8; i++) {
+    const formation = {
         id: i,
         title: `Formations compléte développement web ${i}`,
         description: 'Some quick example text to',
@@ -80,7 +81,7 @@ const formations = [];
         categorieId: 1,
     };
     formations.push(formation);
-  }
+}
 
 function getTodos(userID) {
     var todos = _.filter(TODOS, ['user_id', userID]);
