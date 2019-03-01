@@ -1,11 +1,57 @@
-const _ = require('lodash');
 const express = require('express')
-const app = express()
 const bodyParser = require('body-parser');
+const multer = require('multer');
 const jwt = require('jsonwebtoken');
 const expressJwt = require('express-jwt');
+const mongoose = require('mongoose');
+const faker = require('faker');
+const cors = require('cors');
+const _ = require('lodash');
 
-var cors = require('cors');
+const upload = multer();
+const app = express()
+const PORT = 4000;
+
+
+
+
+mongoose.connect('mongodb://souladaUser:Sd01234560@ds119060.mlab.com:19060/coursenligne', { useNewUrlParser: true });
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'Connection error: can\'t connect to DB'));
+db.once('open', () => {
+    console.log('Connected to DB');
+});
+
+const movieShema = mongoose.Schema({
+    movietitle: String,
+    movieyear: Number
+});
+
+const Movie = mongoose.model('Movie', movieShema);
+const title = 'Terminator';
+const year = 1984;
+
+const myMovie = new Movie({ movietitle: title, movieyear: year });
+const userShema = mongoose.Schema({
+    firstname: String,
+    lastname: String,
+    email: String,
+    passeword: String,
+    created: String
+});
+
+const User = mongoose.model('User', userShema);
+
+
+const userModel = new User({
+    firstname: 'Fayçal',
+    lastname: 'Jebali',
+    email: 'faycal.jebali1@gmail.com',
+    password: '123',
+    created: new Date("Y-m-d")
+});
+
+
 // Allow Origin Host
 app.use(cors({ origin: 'http://localhost:1013' }));
 
@@ -114,6 +160,6 @@ app.get('/api/users', function(req, res) {
     res.send(getUsers());
 });
 
-app.listen(4000, function() {
-    console.log('Angular JWT Todo API Server listening on port 4000!')
+app.listen(PORT, function() {
+    console.log(`Angular JWT Todo API Server listening on port ${PORT}!`)
 });
