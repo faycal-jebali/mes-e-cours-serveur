@@ -28,24 +28,38 @@ const movieShema = mongoose.Schema({
     movieyear: Number
 });
 
-const Movie = mongoose.model('Movie', movieShema);
-const title = 'Terminator';
-const year = 1984;
+const formationShema = mongoose.Schema({
+    title: String,
+    description: String,
+    buttonText: String,
+    img: String,
+    prix: String,
+    prixPromotion: String,
+    categorieId: Number,
+});
+const Formation = mongoose.model('Formation', formationShema);
+const formationData = {
+    title: `Formations compléte développement web 1`,
+    description: 'Some quick example text to',
+    buttonText: 'Button',
+    img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
+    prix: '200',
+    prixPromotion: '10',
+    categorieId: 1,
+};
+const formationDocument = new Formation(formationData);
 
-const myMovie = new Movie({ movietitle: title, movieyear: year });
-const userShema = mongoose.Schema({
-    firstname: String,
-    lastname: String,
-    email: String,
-    passeword: String,
-    created: String
+formationDocument.save((err, savedFormation) => {
+    if (err) {
+        console.error(err);
+    } else {
+        console.log('savedFormation', savedFormation);
+    }
 });
 
 const User = mongoose.model('User', userShema);
-
-
 const userModel = new User({
-    firstname: 'Fayçal',
+    firstname: 'Fayçal22222',
     lastname: 'Jebali',
     email: 'faycal.jebali1@gmail.com',
     password: '123',
@@ -69,19 +83,19 @@ const USERS = [
 ];
 
 const formations = [];
-for (let i = 1; i <= 8; i++) {
-    const formation = {
-        id: i,
-        title: `Formations compléte développement web ${i}`,
-        description: 'Some quick example text to',
-        buttonText: 'Button',
-        img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
-        prix: 200,
-        prixPromotion: 10,
-        categorieId: 1,
-    };
-    formations.push(formation);
-}
+// for (let i = 1; i <= 8; i++) {
+//     const formation = {
+//         id: i,
+//         title: `Formations compléte développement web ${i}`,
+//         description: 'Some quick example text to',
+//         buttonText: 'Button',
+//         img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
+//         prix: 200,
+//         prixPromotion: 10,
+//         categorieId: 1,
+//     };
+//     formations.push(formation);
+// }
 
 function getTodos(userID) {
     var todos = _.filter(TODOS, ['user_id', userID]);
@@ -138,8 +152,16 @@ app.get('/api/todos', function(req, res) {
     res.send(getTodos(req.user.userID));
 });
 app.get('/api/formations', function(req, res) {
-    res.type("json");
-    res.send(getFormations());
+    Formation.find((err, formations) => {
+        if (err) {
+            console.error('could not retrieve formations from DB');
+            res.sendStatus(500);
+        } else if (formations) {
+            res.type("json");
+            res.send(formations);
+        }
+    })
+
 });
 app.get('/api/formations/categorie/id', function(req, res) {
     const categorieID = req.params.id;
