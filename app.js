@@ -49,22 +49,14 @@ const formationData = {
 };
 const formationDocument = new Formation(formationData);
 
-formationDocument.save((err, savedFormation) => {
-    if (err) {
-        console.error(err);
-    } else {
-        console.log('savedFormation', savedFormation);
-    }
-});
-
-const User = mongoose.model('User', userShema);
-const userModel = new User({
-    firstname: 'Fayçal22222',
-    lastname: 'Jebali',
-    email: 'faycal.jebali1@gmail.com',
-    password: '123',
-    created: new Date("Y-m-d")
-});
+// Save une formation
+// formationDocument.save((err, savedFormation) => {
+//     if (err) {
+//         console.error(err);
+//     } else {
+//         console.log('savedFormation', savedFormation);
+//     }
+// });
 
 
 // Allow Origin Host
@@ -80,6 +72,7 @@ const USERS = [
     { 'id': 1, 'username': 'jemma' },
     { 'id': 2, 'username': 'paul' },
     { 'id': 3, 'username': 'sebastian' },
+    { 'id': 4, 'username': 'faycal.jebali1@gmail.com' },
 ];
 
 const formations = [];
@@ -133,11 +126,68 @@ var jsonParser = bodyParser.json();
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq';
 app.use(bodyParser.json());
-app.use(expressJwt({ secret: secret }).unless({ path: ['/api/auth'] }));
+app.use(expressJwt({ secret: secret }).unless({
+    path: [
+        '/',
+        '/api/auth',
+        '/login',
+        '/formations',
+    ]
+}, ));
+// app.use(expressJwt({ secret: secret }).unless({ path: ['/'] }));
+app.use('/public', express.static("public")); //declarer les statiques
+app.set(`views`, `./views`); // declarer le dossier des interfaces EJS
+app.set(`view engine`, `ejs`);
 
-app.get('/', function(req, res) {
-    res.send('Angular JWT Todo API Server')
+// app.get('/', function(req, res) {
+//     res.send('Angular JWT Todo API Server')
+// });
+
+//Home
+app.get('/formations', function(req, res) {
+    Formation.find((err, formations) => {
+        if (err) {
+            console.error('could not retrieve formations from DB');
+            res.sendStatus(500);
+        } else if (formations) {
+            // res.type("json");
+            // res.send(formations);
+            res.render(`formations`, { title: 'Liste des formations', formations: formations });
+        }
+    })
 });
+
+app.get('/login', (req, res) => {
+    res.render('login', { title: 'Connexion' });
+});
+
+const fakeUser = { email: 'faycal.jebali1@gmail.com', password: '123' };
+
+app.post('/login', urlencodedParser, (req, res) => {
+    console.log('login post', req.body);
+    if (!req.body) {
+        return res.sendStatus(500);
+    } else {
+        const user = USERS.find(user => user.username == req.body.email);
+        if (!user || req.body.password != 'todo') {
+            return res.sendStatus(401);
+        } else {
+            // iss means 'issuer'
+            const myToken = jwt.sign({ iss: 'http://localhost:4000', user: 'Faycal', role: 'admin' }, secret);
+            console.log('myToken', myToken);
+            res.json(myToken);
+        }
+        // if (fakeUser.email === req.body.email && fakeUser.password === req.body.password) {
+        //     // iss means 'issuer'
+        //     const myToken = jwt.sign({ iss: 'http://localhost:4000', user: 'Faycal', role: 'admin' }, secret);
+        //     console.log('myToken', myToken);
+        //     res.json(myToken);
+        // } else {
+        //     res.sendStatus(401);
+        // }
+    }
+});
+
 app.post('/api/auth', function(req, res) {
     const body = req.body;
 
@@ -161,8 +211,35 @@ app.get('/api/formations', function(req, res) {
             res.send(formations);
         }
     })
-
 });
+
+//Post Formations
+app.post('/api/formations', function(req, res) {
+    console.log(req.body);
+    const formationData = {
+        title: req.body.title,
+        description: 'Some quick example text to',
+        buttonText: 'Button',
+        img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
+        prix: '200',
+        prixPromotion: '10',
+        categorieId: req.body.categorie,
+    };
+    const formationDocument = new Formation(formationData);
+    formationDocument.save((err, savedFormation) => {
+        if (err) {
+            console.error(err);
+        } else {
+            console.log('savedFormation', savedFormation);
+        }
+    });
+    res.sendStatus(200);
+
+    // users = [...users, newUser];
+    // res.sendStatus(201);
+    // res.render(`register`, { users: users });
+});
+
 app.get('/api/formations/categorie/id', function(req, res) {
     const categorieID = req.params.id;
     res.type("json");
