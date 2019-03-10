@@ -190,7 +190,7 @@ app.post('/login', urlencodedParser, (req, res) => {
 
 app.post('/api/auth', function(req, res) {
     const body = req.body;
-
+    console.log('Body auth : ', req.body);
     const user = USERS.find(user => user.username == body.username);
     if (!user || body.password != 'todo') return res.sendStatus(401);
 
@@ -214,26 +214,56 @@ app.get('/api/formations', function(req, res) {
 });
 
 //Post Formations
-app.post('/api/formations', function(req, res) {
-    console.log(req.body);
-    const formationData = {
-        title: req.body.title,
-        description: 'Some quick example text to',
-        buttonText: 'Button',
-        img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
-        prix: '200',
-        prixPromotion: '10',
-        categorieId: req.body.categorie,
-    };
-    const formationDocument = new Formation(formationData);
-    formationDocument.save((err, savedFormation) => {
-        if (err) {
-            console.error(err);
-        } else {
-            console.log('savedFormation', savedFormation);
-        }
-    });
+// app.post('/api/formations', function(req, res) {
+//     console.log(req.body);
+//     const formationData = {
+//         title: req.body.title,
+//         description: 'Some quick example text to',
+//         buttonText: 'Button',
+//         img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
+//         prix: '200',
+//         prixPromotion: '10',
+//         categorieId: req.body.categorie,
+//     };
+//     const formationDocument = new Formation(formationData);
+//     formationDocument.save((err, savedFormation) => {
+//         if (err) {
+//             console.error(err);
+//         } else {
+//             console.log('savedFormation', savedFormation);
+//         }
+//     });
+//     res.sendStatus(200);
+
+//     // users = [...users, newUser];
+//     // res.sendStatus(201);
+//     // res.render(`register`, { users: users });
+// });
+
+
+//Post Formations
+app.post('/api/products', (req, res) => {
+    console.log('Body post products : ', req.body);
+    // const formationData = {
+    //     title: req.body.prod_name,
+    //     description: req.body.prod_desc,
+    //     buttonText: 'Button',
+    //     img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
+    //     prix: req.body.prod_price,
+    //     prixPromotion: '10',
+    //     categorieId: req.body.categorie,
+    // };
+    // const formationDocument = new Formation(formationData);
+    // formationDocument.save((err, savedFormation) => {
+    //     if (err) {
+    //         console.error(err);
+    //     } else {
+    //         console.log('savedFormation', savedFormation);
+    //     }
+    // });
+    // res.type("json");
     res.sendStatus(200);
+    res.send('dddddddddddddddddddddddddddddddddddd');
 
     // users = [...users, newUser];
     // res.sendStatus(201);
