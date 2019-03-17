@@ -23,6 +23,15 @@ db.once('open', () => {
     console.log('Connected to DB');
 });
 
+app.get('*', function(req, res, next) {
+    // Will crash the server on every HTTP request
+    setImmediate(() => { throw new Error('woops'); });
+});
+
+app.use(function(error, req, res, next) {
+    // Won't get here, because Express doesn't catch the above error
+    res.json({ message: error.message });
+});
 const movieShema = mongoose.Schema({
     movietitle: String,
     movieyear: Number
@@ -242,7 +251,8 @@ app.get('/api/formations', function(req, res) {
 
 
 //Post Formations
-app.post('/api/products', (req, res) => {
+app.post('/api/products/', (req, res) => {
+    console.log('ReQ post products : ', req);
     console.log('Body post products : ', req.body);
     // const formationData = {
     //     title: req.body.prod_name,
