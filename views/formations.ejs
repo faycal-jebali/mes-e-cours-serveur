@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+<% include ./partials/head %>
+
+    <body>
+        <% include ./partials/header %>
+
+            <div class="central">
+                <h1>
+                    <%= title %>
+                </h1>
+
+                <div class="french-movies">
+                    <% for(formation of formations) { %>
+                        <div>
+                            <a href="/formations/<%= formation._id %>">
+                                <%= formation.title %> (
+                                    <%= formation.categorie %>)</a>
+                        </div>
+                        <% } %>
+                </div>
+                <br>
+                <div>
+                    <form>
+                        <legend>Ajouter une formations</legend>
+                        <label for="movietitle">Titre</label>
+                        <input type="text" name="title" id="title">
+                        <label for="movieyear">prix</label>
+                        <input type="text" name="prix" id="prix">
+                        <label for="movieyear">prix promo</label>
+                        <input type="text" name="prixPromotion" id="prixPromotion">
+                        <button type="submit">ajouter</button>
+                    </form>
+                </div>
+            </div>
+
+            <footer>
+                <% include ./partials/footer %>
+            </footer>
+            <script>
+                var form = document.querySelector('form');
+                form.addEventListener("submit", addMovie);
+
+                function addMovie(event) {
+                    if (window.fetch) {
+                        addMovieUsingFetch(event);
+                    } else {
+                        addMovieUsingXHR(event);
+                    }
+                }
+
+                function addMovieUsingFetch(event) {
+                    console.log('using addMovieUsingFetch()');
+                    event.preventDefault();
+
+                    fetch('/api/formations', {
+                            method: 'POST',
+                            body: new FormData(form)
+                        })
+                        .then(checkStatus)
+                        .catch(function(error) {
+                            console.log('request failed', error)
+                        });
+                }
+
+                function checkStatus(response) {
+                    if (response.status >= 200 && response.status < 300) {
+                        let newMovieDiv = document.createElement('div');
+                        const title = document.getElementById('title').value;
+                        const categorie = document.getElementById('categorie').value;
+                        newMovieDiv.innerHTML = `${title} (${categorie})`;
+                        document.querySelector('.french-movies').appendChild(newMovieDiv);
+                        form.reset();
+
+                    } else {
+                        const error = new Error(response.statusText);
+                        error.response = response;
+                        throw error;
+                    }
+                }
+
+                function addMovieUsingXHR(event) {
+                    // this browser does NOT support fetch. Fall back to XHR
+                    event.preventDefault();
+                    console.log('using addMovieUsingXHR()');
+
+                    // https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/send
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", '/movies-old-browser', true);
+
+                    //Send the proper header information along with the request
+                    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+                    xhr.onreadystatechange = function() { //Call a function when the state changes.
+                            if (xhr.readyState == XMLHttpRequest.DONE && xhr.status == 200) {
+
+                                form.reset();
+                            }
+                        }
+                        // https://developer.mozilla.org/en-US/docs/Web/API/FormData/Using_FormData_Objects
+                    console.log('form: ', form);
+                    var movietitle = document.getElementById('movietitle').value;
+                    var movieyear = document.getElementById('movieyear').value;
+                    var payLoad = "movietitle=" + movietitle + "&" + "movieyear=" + movieyear;
+                    xhr.send(payLoad);
+                }
+            </script>
+    </body>
+
+</html>
