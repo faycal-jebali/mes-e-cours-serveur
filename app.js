@@ -23,10 +23,10 @@ db.once('open', () => {
     console.log('Connected to DB');
 });
 
-app.get('*', function(req, res, next) {
-    // Will crash the server on every HTTP request
-    setImmediate(() => { throw new Error('woops'); });
-});
+// app.get('*', function(req, res, next) {
+//     // Will crash the server on every HTTP request
+//     setImmediate(() => { throw new Error('woops'); });
+// });
 
 app.use(function(error, req, res, next) {
     // Won't get here, because Express doesn't catch the above error
@@ -272,7 +272,7 @@ app.post('/api/products/', (req, res) => {
     //     }
     // });
     // res.type("json");
-    res.sendStatus(200);
+    // res.sendStatus(200);
     res.send('dddddddddddddddddddddddddddddddddddd');
 
     // users = [...users, newUser];
