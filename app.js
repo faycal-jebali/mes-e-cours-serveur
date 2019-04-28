@@ -14,7 +14,7 @@ const PORT = 4000;
 const portFront = 4200;
 
 
-
+app.options('*', cors()) // include before other routes
 
 mongoose.connect('mongodb://souladaUser:Sd01234560@ds119060.mlab.com:19060/coursenligne', { useNewUrlParser: true });
 const db = mongoose.connection;
@@ -223,37 +223,7 @@ app.get('/api/formations', function(req, res) {
 });
 
 //Post Formations
-// app.post('/api/formations', function(req, res) {
-//     console.log(req.body);
-//     const formationData = {
-//         title: req.body.title,
-//         description: 'Some quick example text to',
-//         buttonText: 'Button',
-//         img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
-//         prix: '200',
-//         prixPromotion: '10',
-//         categorieId: req.body.categorie,
-//     };
-//     const formationDocument = new Formation(formationData);
-//     formationDocument.save((err, savedFormation) => {
-//         if (err) {
-//             console.error(err);
-//         } else {
-//             console.log('savedFormation', savedFormation);
-//         }
-//     });
-//     res.sendStatus(200);
-
-//     // users = [...users, newUser];
-//     // res.sendStatus(201);
-//     // res.render(`register`, { users: users });
-// });
-
-
-//Post Formations
-app.post('/api/products/', (req, res) => {
-    console.log('ReQ post products : ', req);
-    console.log('Body post products : ', req.body);
+app.post('/api/products', (req, res) => {
     // const formationData = {
     //     title: req.body.prod_name,
     //     description: req.body.prod_desc,
@@ -271,9 +241,18 @@ app.post('/api/products/', (req, res) => {
     //         console.log('savedFormation', savedFormation);
     //     }
     // });
-    // res.type("json");
-    // res.sendStatus(200);
-    res.send('dddddddddddddddddddddddddddddddddddd');
+    var data = {
+        success: true,
+        message: "Produit ajouté ID 15"
+    };
+
+    // Adds header
+    res.setHeader('custom_header_name', 'abcde');
+
+    // responds with status code 200 and data
+    res.status(200).json(data);
+    // res.location('api/products/12').status(201).json({ id: 15 });
+    //res.sendStatus(200);
 
     // users = [...users, newUser];
     // res.sendStatus(201);
