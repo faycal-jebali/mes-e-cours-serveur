@@ -42,30 +42,60 @@ const formationShema = mongoose.Schema({
     description: String,
     buttonText: String,
     img: String,
-    prix: String,
-    prixPromotion: String,
-    categorieId: Number,
+    price: String,
+    promotionPrice: String,
+    categoriesId: String | Number,
 });
 const Formation = mongoose.model('Formation', formationShema);
-const formationData = {
-    title: `Formations compléte développement web 1`,
-    description: 'Some quick example text to',
-    buttonText: 'Button',
-    img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
-    prix: '200',
-    prixPromotion: '10',
-    categorieId: 1,
-};
-const formationDocument = new Formation(formationData);
 
-// Save une formation
-// formationDocument.save((err, savedFormation) => {
-//     if (err) {
-//         console.error(err);
-//     } else {
-//         console.log('savedFormation', savedFormation);
-//     }
-// });
+//Post Formations
+app.post('/api/products', (req, res) => {
+    console.log('req formation :: ', req.body);
+    const formationData = {
+        title: req.body.title,
+        description: req.body.description,
+        price: req.body.price,
+        promotionPrice: req.body.promotionPrice,
+        categoriesId: req.body.categoriesId,
+        buttonText: 'Button',
+        img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
+    };
+    const formationDocument = new Formation(formationData);
+    var idF = 0;
+    formationDocument.save((err, savedFormation) => {
+        if (err) {
+            console.error('savedFormation Error :', err);
+        } else {
+            console.log('savedFormation Sucess :', savedFormation);
+        }
+        idF = savedFormation._id;
+        console.log('FORMATION Inserée ID :: ', idF);
+        if (idF !== 0) {
+            var data = {
+                success: true,
+                message: "Produit ajouté ID 15",
+                data: idF
+            };
+
+
+            // Adds header
+            res.setHeader('custom_header_name', 'abcde');
+
+            // responds with status code 200 and data
+            res.status(200).json(data);
+        }
+    });
+
+    // res.location('api/products/12').status(201).json({ id: 15 });
+    //res.sendStatus(200);
+
+    // users = [...users, newUser];
+    // res.sendStatus(201);
+    // res.render(`register`, { users: users });
+});
+
+
+/*************************************** */
 
 
 // Allow Origin Host
@@ -85,19 +115,6 @@ const USERS = [
 ];
 
 const formations = [];
-// for (let i = 1; i <= 8; i++) {
-//     const formation = {
-//         id: i,
-//         title: `Formations compléte développement web ${i}`,
-//         description: 'Some quick example text to',
-//         buttonText: 'Button',
-//         img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
-//         prix: 200,
-//         prixPromotion: 10,
-//         categorieId: 1,
-//     };
-//     formations.push(formation);
-// }
 
 function getTodos(userID) {
     var todos = _.filter(TODOS, ['user_id', userID]);
@@ -150,20 +167,6 @@ app.set(`view engine`, `ejs`);
 
 // app.get('/', function(req, res) {
 //     res.send('Angular JWT Todo API Server')
-// });
-
-//Home
-// app.get('/formations', function(req, res) {
-//     Formation.find((err, formations) => {
-//         if (err) {
-//             console.error('could not retrieve formations from DB');
-//             res.sendStatus(500);
-//         } else if (formations) {
-//             // res.type("json");
-//             // res.send(formations);
-//             res.render(`formations`, { title: 'Liste des formations', formations: formations });
-//         }
-//     })
 // });
 
 app.get('/login', (req, res) => {
@@ -222,50 +225,7 @@ app.get('/api/formations', function(req, res) {
     })
 });
 
-//Post Formations
-app.post('/api/products', (req, res) => {
-    const formationData = {
-        title: req.body.prod_name,
-        description: req.body.prod_desc,
-        buttonText: 'Button',
-        img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
-        prix: req.body.prod_price,
-        prixPromotion: '10',
-        categorieId: req.body.categorie,
-    };
-    const formationDocument = new Formation(formationData);
-    var idF = 0;
-    formationDocument.save((err, savedFormation) => {
-        if (err) {
-            console.error('savedFormation Error :', err);
-        } else {
-            console.log('savedFormation Sucess :', savedFormation);
-        }
-        idF = savedFormation._id;
-        console.log('FORMATION Inserée ID :: ', idF);
-        if (idF !== 0) {
-            var data = {
-                success: true,
-                message: "Produit ajouté ID 15",
-                data: idF
-            };
 
-
-            // Adds header
-            res.setHeader('custom_header_name', 'abcde');
-
-            // responds with status code 200 and data
-            res.status(200).json(data);
-        }
-    });
-
-    // res.location('api/products/12').status(201).json({ id: 15 });
-    //res.sendStatus(200);
-
-    // users = [...users, newUser];
-    // res.sendStatus(201);
-    // res.render(`register`, { users: users });
-});
 
 app.get('/api/formations/categorie/:id', function(req, res) {
     const categorieID = req.params.id;
@@ -291,21 +251,14 @@ app.get('/api/formations/:id', function(req, res) {
         res.type("json");
         res.send(formation);
     });
-    // Formation.find((err, formations) => {
-    //     if (err) {
-    //         console.error('could not retrieve formations from DB');
-    //         res.sendStatus(500);
-    //     } else if (formations) {
-    //         res.type("json");
-    //         res.send({ coutn: formations.length });
-    //     }
-    // })
 });
+
 app.get('/api/todos/:id', function(req, res) {
     var todoID = req.params.id;
     res.type("json");
     res.send(getTodo(todoID));
 });
+
 app.get('/api/users', function(req, res) {
     res.type("json");
     res.send(getUsers());
