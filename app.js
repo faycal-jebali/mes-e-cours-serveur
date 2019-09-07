@@ -12,10 +12,39 @@ const upload = multer();
 const app = express()
 const PORT = 4000;
 const portFront = 4200;
+// Allow Origin Host
+app.use(cors({ origin: `http://localhost:${portFront}` }));
 
 
 app.options('*', cors()) // include before other routes
 
+const formations = [];
+
+// create application/json parser
+var jsonParser = bodyParser.json();
+
+// create application/x-www-form-urlencoded parser
+var urlencodedParser = bodyParser.urlencoded({ extended: false });
+const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq';
+app.use(bodyParser.json());
+app.use(expressJwt({ secret: secret }).unless({
+    path: [
+        '/',
+        '/api/auth',
+        '/login',
+        '/formations',
+    ]
+}, ));
+
+// app.use(expressJwt({ secret: secret }).unless({ path: ['/'] }));
+app.use('/public', express.static("public")); //declarer les statiques
+app.set(`views`, `./views`); // declarer le dossier des interfaces EJS
+app.set(`view engine`, `ejs`);
+
+/**
+ * Connection MongoDB en ligne
+ * MLAB.com
+ */
 mongoose.connect('mongodb://souladaUser:Sd01234560@ds119060.mlab.com:19060/coursenligne', { useNewUrlParser: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'Connection error: can\'t connect to DB'));
@@ -23,20 +52,16 @@ db.once('open', () => {
     console.log('Connected to DB');
 });
 
-// app.get('*', function(req, res, next) {
-//     // Will crash the server on every HTTP request
-//     setImmediate(() => { throw new Error('woops'); });
-// });
-
 app.use(function(error, req, res, next) {
     // Won't get here, because Express doesn't catch the above error
     res.json({ message: error.message });
 });
-const movieShema = mongoose.Schema({
-    movietitle: String,
-    movieyear: Number
-});
 
+
+/**
+ * Formation
+ * Création Schema
+ */
 const formationShema = mongoose.Schema({
     title: String,
     description: String,
@@ -45,11 +70,34 @@ const formationShema = mongoose.Schema({
     price: String,
     promotionPrice: String,
     categoriesId: String | Number,
+    chapiters: Array,
 });
+
+/**
+ * Formation
+ * Modéle Mongoose
+ */
 const Formation = mongoose.model('Formation', formationShema);
 
-//Post Formations
-app.post('/api/products', (req, res) => {
+/**
+ * Get Liste Formations
+ */
+app.get('/api/formations', function(req, res) {
+    Formation.find((err, formations) => {
+        if (err) {
+            console.error('could not retrieve formations from DB');
+            res.sendStatus(500);
+        } else if (formations) {
+            res.type("json");
+            res.send(formations);
+        }
+    })
+});
+
+/**
+ * Ajouter une nouvelle Formation
+ */
+app.post('/api/formation', (req, res) => {
     console.log('req formation :: ', req.body);
     const formationData = {
         title: req.body.title,
@@ -57,6 +105,7 @@ app.post('/api/products', (req, res) => {
         price: req.body.price,
         promotionPrice: req.body.promotionPrice,
         categoriesId: req.body.categoriesId,
+        chapiters: req.body.chapiters,
         buttonText: 'Button',
         img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
     };
@@ -85,51 +134,34 @@ app.post('/api/products', (req, res) => {
             res.status(200).json(data);
         }
     });
-
-    // res.location('api/products/12').status(201).json({ id: 15 });
-    //res.sendStatus(200);
-
-    // users = [...users, newUser];
-    // res.sendStatus(201);
-    // res.render(`register`, { users: users });
 });
 
 
-/*************************************** */
-
-
-// Allow Origin Host
-app.use(cors({ origin: `http://localhost:${portFront}` }));
-
-const TODOS = [
-    { 'id': 1, 'user_id': 1, 'name': "Get Milk", 'completed': false },
-    { 'id': 2, 'user_id': 1, 'name': "Fetch Kids", 'completed': true },
-    { 'id': 3, 'user_id': 2, 'name': "Buy flowers for wife", 'completed': false },
-    { 'id': 4, 'user_id': 3, 'name': "Finish Angular JWT Todo App", 'completed': false },
-];
-const USERS = [
-    { 'id': 1, 'username': 'jemma' },
-    { 'id': 2, 'username': 'paul' },
-    { 'id': 3, 'username': 'sebastian' },
-    { 'id': 4, 'username': 'faycal.jebali1@gmail.com' },
-];
-
-const formations = [];
-
-function getTodos(userID) {
-    var todos = _.filter(TODOS, ['user_id', userID]);
-
-    return todos;
-}
-
-function getTodo(todoID) {
-    var todo = _.find(TODOS, function(todo) { return todo.id == todoID; })
-    return todo;
-}
-
-function getUsers() {
-    return USERS;
-}
+app.get('/api/formations/categorie/:id', function(req, res) {
+    const categorieID = req.params.id;
+    res.type("json");
+    res.send(getFormationByCategorie(categorieID));
+});
+app.get('/api/formations', function(req, res) {
+    Formation.find((err, formations) => {
+        if (err) {
+            console.error('could not retrieve formations from DB');
+            res.sendStatus(500);
+        } else if (formations) {
+            res.type("json");
+            res.send(formations);
+        }
+    })
+});
+app.get('/api/formations/:id', function(req, res) {
+    const formationID = req.params.id;
+    Formation.findById(formationID, function(err, formation) {
+        if (err)
+            res.send(err);
+        res.type("json");
+        res.send(formation);
+    });
+});
 
 function getFormations() {
     return formations;
@@ -145,29 +177,24 @@ function getFormationByCategorie(categorieID) {
     return listeByCategiorie;
 }
 
+const TODOS = [
+    { 'id': 1, 'user_id': 1, 'name': "Get Milk", 'completed': false },
+    { 'id': 2, 'user_id': 1, 'name': "Fetch Kids", 'completed': true },
+    { 'id': 3, 'user_id': 2, 'name': "Buy flowers for wife", 'completed': false },
+    { 'id': 4, 'user_id': 3, 'name': "Finish Angular JWT Todo App", 'completed': false },
+];
+const USERS = [
+    { 'id': 1, 'username': 'jemma' },
+    { 'id': 2, 'username': 'paul' },
+    { 'id': 3, 'username': 'sebastian' },
+    { 'id': 4, 'username': 'faycal.jebali1@gmail.com' },
+];
 
-// create application/json parser
-var jsonParser = bodyParser.json();
-// create application/x-www-form-urlencoded parser
-var urlencodedParser = bodyParser.urlencoded({ extended: false });
-const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq';
-app.use(bodyParser.json());
-app.use(expressJwt({ secret: secret }).unless({
-    path: [
-        '/',
-        '/api/auth',
-        '/login',
-        '/formations',
-    ]
-}, ));
-// app.use(expressJwt({ secret: secret }).unless({ path: ['/'] }));
-app.use('/public', express.static("public")); //declarer les statiques
-app.set(`views`, `./views`); // declarer le dossier des interfaces EJS
-app.set(`view engine`, `ejs`);
 
-// app.get('/', function(req, res) {
-//     res.send('Angular JWT Todo API Server')
-// });
+function getUsers() {
+    return USERS;
+}
+
 
 app.get('/login', (req, res) => {
     res.render('login', { title: 'Connexion' });
@@ -209,55 +236,6 @@ app.post('/api/auth', function(req, res) {
     var token = jwt.sign({ userID: user.id }, secret, { expiresIn: '2h' });
     res.send({ token });
 });
-app.get('/api/todos', function(req, res) {
-    res.type("json");
-    res.send(getTodos(req.user.userID));
-});
-app.get('/api/formations', function(req, res) {
-    Formation.find((err, formations) => {
-        if (err) {
-            console.error('could not retrieve formations from DB');
-            res.sendStatus(500);
-        } else if (formations) {
-            res.type("json");
-            res.send(formations);
-        }
-    })
-});
-
-
-
-app.get('/api/formations/categorie/:id', function(req, res) {
-    const categorieID = req.params.id;
-    res.type("json");
-    res.send(getFormationByCategorie(categorieID));
-});
-app.get('/api/formations', function(req, res) {
-    Formation.find((err, formations) => {
-        if (err) {
-            console.error('could not retrieve formations from DB');
-            res.sendStatus(500);
-        } else if (formations) {
-            res.type("json");
-            res.send(formations);
-        }
-    })
-});
-app.get('/api/formations/:id', function(req, res) {
-    const formationID = req.params.id;
-    Formation.findById(formationID, function(err, formation) {
-        if (err)
-            res.send(err);
-        res.type("json");
-        res.send(formation);
-    });
-});
-
-app.get('/api/todos/:id', function(req, res) {
-    var todoID = req.params.id;
-    res.type("json");
-    res.send(getTodo(todoID));
-});
 
 app.get('/api/users', function(req, res) {
     res.type("json");
@@ -266,4 +244,25 @@ app.get('/api/users', function(req, res) {
 
 app.listen(PORT, function() {
     console.log(`Angular JWT Todo API Server listening on port ${PORT}!`)
+});
+
+/******** */
+
+function getTodos(userID) {
+    var todos = _.filter(TODOS, ['user_id', userID]);
+    return todos;
+}
+
+function getTodo(todoID) {
+    var todo = _.find(TODOS, function(todo) { return todo.id == todoID; })
+    return todo;
+}
+app.get('/api/todos', function(req, res) {
+    res.type("json");
+    res.send(getTodos(req.user.userID));
+});
+app.get('/api/todos/:id', function(req, res) {
+    var todoID = req.params.id;
+    res.type("json");
+    res.send(getTodo(todoID));
 });
