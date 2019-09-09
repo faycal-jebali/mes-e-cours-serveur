@@ -8,15 +8,51 @@ const faker = require('faker');
 const cors = require('cors');
 const _ = require('lodash');
 
-const upload = multer();
+// const upload = multer();
 const app = express()
 const PORT = 4000;
 const portFront = 4200;
+
+const DIR = './uploads';
+
+let storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, DIR);
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '-' + Date.now() + '.' + file.originalname);
+    }
+});
+let upload = multer({ storage: storage });
+
 // Allow Origin Host
 app.use(cors({ origin: `http://localhost:${portFront}` }));
 
-
+app.use(function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', `http://localhost:${portFront}`);
+    res.setHeader('Access-Control-Allow-Methods', 'POST');
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    next();
+});
 app.options('*', cors()) // include before other routes
+
+
+// Upload File
+app.post('/api/upload', upload.single('photo'), function(req, res) {
+    if (!req.file) {
+        console.log("No file received");
+        return res.send({
+            success: false
+        });
+
+    } else {
+        console.log('file received successfully');
+        return res.send({
+            success: true
+        })
+    }
+});
 
 const formations = [];
 
@@ -33,6 +69,8 @@ app.use(expressJwt({ secret: secret }).unless({
         '/api/auth',
         '/login',
         '/formations',
+        '/upload',
+        '/api/upload'
     ]
 }, ));
 
@@ -107,7 +145,7 @@ app.post('/api/formation', (req, res) => {
         categoriesId: req.body.categoriesId,
         chapiters: req.body.chapiters,
         buttonText: 'Button',
-        img: 'https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20(34).jpg',
+        img: req.body.image,
     };
     const formationDocument = new Formation(formationData);
     var idF = 0;
@@ -125,17 +163,13 @@ app.post('/api/formation', (req, res) => {
                 message: "Produit ajouté ID 15",
                 data: idF
             };
-
-
             // Adds header
             res.setHeader('custom_header_name', 'abcde');
-
             // responds with status code 200 and data
             res.status(200).json(data);
         }
     });
 });
-
 
 app.get('/api/formations/categorie/:id', function(req, res) {
     const categorieID = req.params.id;
