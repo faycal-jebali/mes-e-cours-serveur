@@ -101,6 +101,7 @@ app.use(function(error, req, res, next) {
  * Création Schema
  */
 const formationShema = mongoose.Schema({
+    statut: String,
     title: String,
     description: String,
     buttonText: String,
@@ -138,6 +139,7 @@ app.get('/api/formations', function(req, res) {
 app.post('/api/formation', (req, res) => {
     console.log('req formation :: ', req.body);
     const formationData = {
+        statut: req.body.statut,
         title: req.body.title,
         description: req.body.description,
         price: req.body.price,
