@@ -212,6 +212,84 @@ function getFormationByCategorie(categorieID) {
     var listeByCategiorie = _.find(formations, function(formation) { return formation.categorieId == categorieID; })
     return listeByCategiorie;
 }
+/********************UTILISATREURS */
+
+/**
+ * User
+ * Création Schema
+ */
+const userShema = mongoose.Schema({
+    identity: {
+        civility: String,
+        lastname: String,
+        firstname: String,
+        birthday: Date,
+        familysituation: String,
+        // image: String
+    },
+    address: {
+        country: String,
+        city: String,
+        address: String,
+        zip: String
+    },
+    contact: {
+        mobile: String,
+        telephone: String,
+        email: String,
+        password: String,
+    },
+    createdate: Date,
+    role: Array
+});
+
+/**
+ * User Collection
+ * Modéle Mongoose
+ */
+const UserModel = mongoose.model('User', userShema);
+
+
+/**
+ * Add New User
+ */
+app.post('/api/user', (req, res) => {
+    console.log('req User :: ', req.body);
+    const identity = req.body.identity;
+    identity.birthday = new Date();
+    const userData = {
+
+        identity: identity,
+        address: req.body.address,
+        contact: req.body.contact,
+        createdate: new Date(),
+        role: req.body.role,
+    };
+    const dbUserDocument = new UserModel(userData);
+    var idDoc = 0;
+    dbUserDocument.save((err, dbUserSaved) => {
+        if (err) {
+            console.error('dbUserSaved Error :', err);
+        } else {
+            console.log('dbUserSaved Sucess :', dbUserSaved);
+        }
+        idDoc = dbUserSaved._id;
+        console.log('User added ID :: ', idDoc);
+        if (idDoc !== 0) {
+            var data = {
+                success: true,
+                message: `User is added ID ${idDoc}`,
+                data: idDoc
+            };
+            // Adds header
+            res.setHeader('custom_header_name', 'abcde');
+            // responds with status code 200 and data
+            res.status(200).json(data);
+        }
+    });
+});
+
+/**************** */
 
 const TODOS = [
     { 'id': 1, 'user_id': 1, 'name': "Get Milk", 'completed': false },
