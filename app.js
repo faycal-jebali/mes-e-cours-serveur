@@ -251,6 +251,20 @@ const UserModel = mongoose.model('User', userShema);
 
 
 /**
+ * Get Liste Users
+ */
+app.get('/api/users', function(req, res) {
+    UserModel.find((err, users) => {
+        if (err) {
+            console.error('could not retrieve formations from DB');
+            res.sendStatus(500);
+        } else if (users) {
+            res.type("json");
+            res.send(users);
+        }
+    })
+});
+/**
  * Add New User
  */
 app.post('/api/user', (req, res) => {
@@ -258,7 +272,6 @@ app.post('/api/user', (req, res) => {
     const identity = req.body.identity;
     identity.birthday = new Date();
     const userData = {
-
         identity: identity,
         address: req.body.address,
         contact: req.body.contact,
@@ -351,7 +364,7 @@ app.post('/api/auth', function(req, res) {
     res.send({ token });
 });
 
-app.get('/api/users', function(req, res) {
+app.get('/api/mock/users', function(req, res) {
     res.type("json");
     res.send(getUsers());
 });
