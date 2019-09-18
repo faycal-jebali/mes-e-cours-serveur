@@ -212,6 +212,12 @@ function getFormationByCategorie(categorieID) {
     var listeByCategiorie = _.find(formations, function(formation) { return formation.categorieId == categorieID; })
     return listeByCategiorie;
 }
+
+
+function getUser(idUser) {
+    var userData = _.find(users, function(user) { return user._id == idUser; })
+    return userData;
+}
 /********************UTILISATREURS */
 
 /**
@@ -264,6 +270,22 @@ app.get('/api/users', function(req, res) {
         }
     })
 });
+
+/**
+ * Get Liste Users
+ */
+app.get('/api/user/:id', function(req, res) {
+    const idUser = req.params.id;
+    UserModel.find({ '_id': idUser }, (err, users) => {
+        if (err) {
+            console.error('could not retrieve formations from DB');
+            res.sendStatus(500);
+        } else if (users) {
+            res.type("json");
+            res.send(users);
+        }
+    })
+});
 /**
  * Add New User
  */
@@ -300,6 +322,38 @@ app.post('/api/user', (req, res) => {
             res.status(200).json(data);
         }
     });
+});
+
+
+
+/**
+ * Update User
+ */
+app.put('/api/user/:id', (req, res) => {
+    const idUser = req.params.id;
+    console.log('req User id :: ', req.params.id);
+    console.log('req User :: ', req.body);
+    const identity = req.body.identity;
+    identity.birthday = new Date();
+    const userData = {
+        identity: identity,
+        address: req.body.address,
+        contact: req.body.contact,
+        createdate: new Date(),
+        role: req.body.role,
+    };
+    const dbUserDocument = new UserModel(userData);
+    dbUserDocument.updateOne({ _id: idUser }, { $set: { role: ['ddddddddddddddddddddd'] } }, { new: true });
+
+    // var data = {
+    //     success: true,
+    //     message: `User is added ID ${idUser}`,
+    //     data: idUser
+    // };
+    // // Adds header
+    // res.setHeader('custom_header_name', 'abcde');
+    // // responds with status code 200 and data
+    // res.status(200).json(data);
 });
 
 /**************** */
