@@ -324,36 +324,45 @@ app.post('/api/user', (req, res) => {
     });
 });
 
-
-
+function runUpdate(playerObj) {
+    return new Promise((resolve, reject) => {
+        //you update code here
+        Users.findOneAndUpdate({ _id: gameId }, { $set: { role: ['sssssssssssssssssssssssss'] } }, { new: true })
+            .then((result) => resolve())
+            .catch((err) => reject(err));
+    });
+}
 /**
  * Update User
  */
 app.put('/api/user/:id', (req, res) => {
     const idUser = req.params.id;
-    console.log('req User id :: ', req.params.id);
-    console.log('req User :: ', req.body);
     const identity = req.body.identity;
     identity.birthday = new Date();
-    const userData = {
-        identity: identity,
-        address: req.body.address,
-        contact: req.body.contact,
-        createdate: new Date(),
-        role: req.body.role,
-    };
-    const dbUserDocument = new UserModel(userData);
-    dbUserDocument.updateOne({ _id: idUser }, { $set: { role: ['ddddddddddddddddddddd'] } }, { new: true });
+    new Promise((resolve, reject) => {
+        UserModel.findOneAndUpdate({ _id: idUser }, { $set: { role: ['Customer'], identity: req.body.identity, address: req.body.address, contact: req.body.contact } }, { new: true })
+            .then((result) => {
+                var data = {
+                    success: true,
+                    message: `User is added ID ${idUser}`,
+                    data: idUser
+                };
+                res.status(200).json(data);
+                resolve();
+            })
+            .catch((err) => {
+                var data = {
+                    success: false,
+                    message: err,
+                    data: idUser
+                };
+                // TODO 
+                // get ERROR CODE Auto
+                res.status(500).json(data);
+                reject(err);
+            });
+    });
 
-    // var data = {
-    //     success: true,
-    //     message: `User is added ID ${idUser}`,
-    //     data: idUser
-    // };
-    // // Adds header
-    // res.setHeader('custom_header_name', 'abcde');
-    // // responds with status code 200 and data
-    // res.status(200).json(data);
 });
 
 /**************** */
