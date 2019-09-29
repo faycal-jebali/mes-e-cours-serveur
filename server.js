@@ -20,6 +20,7 @@ const USERS = [
     { 'id': 3, 'username': 'sebastian' },
     { 'id': 4, 'username': 'faycal.jebali1@gmail.com' },
 ];
+
 const DIR = './uploads';
 
 let storage = multer.diskStorage({
@@ -74,6 +75,7 @@ app.get('/', (req, res) => {
 require('./app/routes/note.routes.js')(app);
 require('./app/routes/user.routes.js')(app);
 require('./app/routes/formation.routes.js')(app);
+require('./app/routes/category.routes.js')(app);
 const formations = [];
 
 function getFormations() {
