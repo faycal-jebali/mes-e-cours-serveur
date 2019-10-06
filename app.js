@@ -8,6 +8,10 @@ const faker = require('faker');
 const cors = require('cors');
 const _ = require('lodash');
 
+
+// Configuring the database
+const dbConfig = require('./config/database.config.js');
+
 // const upload = multer();
 const app = express()
 const PORT = 4000;
@@ -83,12 +87,12 @@ app.set(`view engine`, `ejs`);
  * Connection MongoDB en ligne
  * MLAB.com
  */
-mongoose.connect('mongodb://souladaUser:Sd01234560@ds119060.mlab.com:19060/coursenligne', { useNewUrlParser: true });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'Connection error: can\'t connect to DB'));
-db.once('open', () => {
-    console.log('Connected to DB');
-});
+// mongoose.connect('mongodb://souladaUser:Sd01234560@ds119060.mlab.com:19060/coursenligne', { useNewUrlParser: true });
+// const db = mongoose.connection;
+// db.on('error', console.error.bind(console, 'Connection error: can\'t connect to DB'));
+// db.once('open', () => {
+//     console.log('Connected to DB');
+// });
 
 app.use(function(error, req, res, next) {
     // Won't get here, because Express doesn't catch the above error
@@ -173,11 +177,11 @@ app.post('/api/formation', (req, res) => {
     });
 });
 
-app.get('/api/formations/categorie/:id', function(req, res) {
-    const categorieID = req.params.id;
-    res.type("json");
-    res.send(getFormationByCategorie(categorieID));
-});
+// app.get('/api/formations/categorie/:id', function(req, res) {
+//     const categorieID = req.params.id;
+//     res.type("json");
+//     res.send(getFormationByCategorie(categorieID));
+// });
 app.get('/api/formations', function(req, res) {
     Formation.find((err, formations) => {
         if (err) {
@@ -324,14 +328,6 @@ app.post('/api/user', (req, res) => {
     });
 });
 
-function runUpdate(playerObj) {
-    return new Promise((resolve, reject) => {
-        //you update code here
-        Users.findOneAndUpdate({ _id: gameId }, { $set: { role: ['sssssssssssssssssssssssss'] } }, { new: true })
-            .then((result) => resolve())
-            .catch((err) => reject(err));
-    });
-}
 /**
  * Update User
  */
