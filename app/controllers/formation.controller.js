@@ -5,6 +5,7 @@ exports.create = (req, res) => {
     // Validate request
     if (!req.body) {
         return res.status(400).send({
+            success: false,
             message: "Formation content can not be empty"
         });
     }
@@ -26,9 +27,14 @@ exports.create = (req, res) => {
     // Save Formation in the database
     formation.save()
         .then(data => {
-            res.send(data);
+            res.send({
+                success: true,
+                message: "Formation created successfully!",
+                data: { id: data._id }
+            });
         }).catch(err => {
             res.status(500).send({
+                success: false,
                 message: err.message || "Some error occurred while creating the formation."
             });
         });
@@ -41,6 +47,7 @@ exports.findAll = (req, res) => {
             res.send(formations);
         }).catch(err => {
             res.status(500).send({
+                success: false,
                 message: err.message || "Some error occurred while retrieving formations."
             });
         });
@@ -53,6 +60,7 @@ exports.findOne = (req, res) => {
         .then(formation => {
             if (!formation) {
                 return res.status(404).send({
+                    success: false,
                     message: "formation not found with id " + idFormation
                 });
             }
@@ -60,10 +68,12 @@ exports.findOne = (req, res) => {
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
+                    success: false,
                     message: "formation not found with id " + idFormation
                 });
             }
             return res.status(500).send({
+                success: false,
                 message: "Error retrieving formation with id " + idFormation
             });
         });
@@ -97,17 +107,24 @@ exports.update = (req, res) => {
         .then(formation => {
             if (!formation) {
                 return res.status(404).send({
+                    success: false,
                     message: "formation not found with id " + idFormation
                 });
             }
-            res.send(formation);
+            res.send({
+                success: true,
+                message: "Formation updated successfully!",
+                data: { id: idFormation }
+            });
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
+                    success: false,
                     message: "formation not found with id " + idFormation
                 });
             }
             return res.status(500).send({
+                success: false,
                 message: "Error updating formation with id " + idFormation
             });
         });
@@ -120,17 +137,23 @@ exports.delete = (req, res) => {
         .then(formation => {
             if (!formation) {
                 return res.status(404).send({
+                    success: false,
                     message: "Formation not found with id " + idFormation
                 });
             }
-            res.send({ message: "Formation deleted successfully!" });
+            res.send({
+                success: true,
+                message: "Formation deleted successfully!",
+            });
         }).catch(err => {
             if (err.kind === 'ObjectId' || err.name === 'NotFound') {
                 return res.status(404).send({
+                    success: false,
                     message: "Formation not found with id " + idFormation
                 });
             }
             return res.status(500).send({
+                success: false,
                 message: "Could not delete Formation with id " + idFormation
             });
         });
