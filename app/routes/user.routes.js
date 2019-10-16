@@ -10,6 +10,9 @@ module.exports = (app) => {
     // Retrieve a single User with userId
     app.get('/api/users/:id', users.findOne);
 
+    // Retrieve a single User with userId
+    app.get('/api/currentUser/:id', users.getCurrentUser);
+
     // Update a User with userId
     app.put('/api/users/:id', users.update);
 

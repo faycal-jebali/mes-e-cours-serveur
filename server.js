@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const faker = require('faker');
 const cors = require('cors');
 const _ = require('lodash');
+const Bcrypt = require("bcryptjs");
 
 // create express app
 const app = express();
@@ -76,17 +77,33 @@ require('./app/routes/note.routes.js')(app);
 require('./app/routes/user.routes.js')(app);
 require('./app/routes/formation.routes.js')(app);
 require('./app/routes/category.routes.js')(app);
-const formations = [];
+const UserModel = require('./app/models/user.model.js');
+const idUser = '5d8937139a94a222b84b76e4';
+// console.log('UserModel :: ', UserModel);
 
-function getFormations() {
-    return formations;
+
+// const formations = [];
+
+// function getFormations() {
+//     return formations;
+// }
+
+// function getFormation(formationID) {
+//     // var formation = _.find(formations, function(formation) { return formation; })
+//     return formations;
+// }
+
+function checkAuth(email, password) {
+    return UserModel.findOne({ 'contact.password': password, 'contact.email': email })
+        .then(user => {
+            console.log('user :: ', user);
+            if (!user) {
+                return false;
+            } else {
+                return user;
+            }
+        });
 }
-
-function getFormation(formationID) {
-    // var formation = _.find(formations, function(formation) { return formation; })
-    return formations;
-}
-
 
 
 app.get('/login', (req, res) => {
@@ -97,39 +114,60 @@ const fakeUser = { email: 'faycal.jebali1@gmail.com', password: '123' };
 var urlencodedParser = bodyParser.urlencoded({ extended: false });
 const secret = 'qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq';
 
-app.post('/login', urlencodedParser, (req, res) => {
-    console.log('login post', req.body);
-    if (!req.body) {
-        return res.sendStatus(500);
-    } else {
-        const user = USERS.find(user => user.username == req.body.email);
-        if (!user || req.body.password != 'todo') {
-            return res.sendStatus(401);
-        } else {
-            // iss means 'issuer'
-            const myToken = jwt.sign({ iss: 'http://localhost:4000', user: 'Faycal', role: 'admin' }, secret);
-            console.log('myToken', myToken);
-            res.json(myToken);
-        }
-        // if (fakeUser.email === req.body.email && fakeUser.password === req.body.password) {
-        //     // iss means 'issuer'
-        //     const myToken = jwt.sign({ iss: 'http://localhost:4000', user: 'Faycal', role: 'admin' }, secret);
-        //     console.log('myToken', myToken);
-        //     res.json(myToken);
-        // } else {
-        //     res.sendStatus(401);
-        // }
-    }
-});
+// app.post('/login', urlencodedParser, (req, res) => {
+//     console.log('login post', req.body);
+//     if (!req.body) {
+//         return res.sendStatus(500);
+//     } else {
+//         const user = USERS.find(user => user.username == req.body.email);
+//         if (!user || req.body.password != 'todo') {
+//             return res.sendStatus(401);
+//         } else {
+//             // iss means 'issuer'
+//             const myToken = jwt.sign({ iss: `http://localhost:${PORT}`, user: 'Faycal', role: 'admin' }, secret);
+//             console.log('myToken', myToken);
+//             res.json(myToken);
+//         }
+//     }
+// });
 
-app.post('/api/auth', function(req, res) {
+app.post('/api/auth', async function(req, res) {
     const body = req.body;
     console.log('Body auth : ', req.body);
-    const user = USERS.find(user => user.username == body.username);
-    if (!user || body.password != 'todo') return res.sendStatus(401);
+    // const user = USERS.find(user => user.username == body.username);
+    // if (!user || body.password != 'todo') return res.sendStatus(401);
+    try {
+        var user = await UserModel.findOne({ 'contact.email': body.username }).exec();
+        if (!user) {
+            return res.status(400).send({ message: "The username does not exist" });
+        }
+        if (!Bcrypt.compareSync(body.password, user.contact.password)) {
+            return res.status(400).send({ message: "The password is invalid" });
+        }
+        var token = jwt.sign({ userID: user._id }, secret, { expiresIn: '2h' });
+        res.send({
+            token: token,
+            userData: user
+        });
+    } catch (error) {
+        res.status(500).send(error);
+    }
+    // UserModel.findOne({ 'contact.password': body.password, 'contact.email': body.username })
+    //     .then(user => {
+    //         console.log('user :: ', user);
+    //         if (!user) {
+    //             return res.sendStatus(401);
+    //         } else {
+    //             var token = jwt.sign({ userID: user._id }, secret, { expiresIn: '2h' });
+    //             res.send({ token });
+    //         }
+    //     });
 
-    var token = jwt.sign({ userID: user.id }, secret, { expiresIn: '2h' });
-    res.send({ token });
+    // var token = jwt.sign({ userID: user.id }, secret, { expiresIn: '2h' });
+    // if (userData) {
+    //     var token = jwt.sign({ userID: userData._id }, secret, { expiresIn: '2h' });
+    //     res.send({ token });
+    // }
 });
 
 app.get('/api/mock/users', function(req, res) {

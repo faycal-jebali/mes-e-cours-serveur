@@ -1,3 +1,5 @@
+const Bcrypt = require("bcryptjs");
+
 const UserModel = require('../models/user.model.js');
 
 // Create and Save a new User
@@ -11,6 +13,7 @@ exports.create = (req, res) => {
 
     console.log('req User :: ', req.body);
     const identity = req.body.identity;
+    req.body.contact.password = Bcrypt.hashSync(req.body.contact.password, 10);
     identity.birthday = new Date();
     const userData = {
         identity: identity,
@@ -21,6 +24,7 @@ exports.create = (req, res) => {
     };
     // Create a User
     const user = new UserModel(userData);
+
 
 
     // Save User in the database
@@ -56,6 +60,32 @@ exports.findOne = (req, res) => {
                     message: "User not found with id " + idUser
                 });
             }
+
+            user.contact.password = '';
+            res.send(user);
+        }).catch(err => {
+            if (err.kind === 'ObjectId') {
+                return res.status(404).send({
+                    message: "User not found with id " + idUser
+                });
+            }
+            return res.status(500).send({
+                message: "Error retrieving user with id " + idUser
+            });
+        });
+};
+
+// Find a single user with a userId
+exports.getCurrentUser = (req, res) => {
+    const idUser = req.params.id;
+    UserModel.findById(idUser)
+        .then(user => {
+            if (!user) {
+                return res.status(404).send({
+                    message: "User not found with id " + idUser
+                });
+            }
+            delete user.contact.password;
             res.send(user);
         }).catch(err => {
             if (err.kind === 'ObjectId') {
@@ -80,10 +110,11 @@ exports.update = (req, res) => {
     const idUser = req.params.id;
     const identity = req.body.identity;
     identity.birthday = new Date();
+    req.body.contact.password = Bcrypt.hashSync(req.body.contact.password, 10);
     // Find user and update it with the request body
     UserModel.findByIdAndUpdate(idUser, {
             $set: {
-                role: ['Customer'],
+                role: req.body.role,
                 identity: req.body.identity,
                 address: req.body.address,
                 contact: req.body.contact
