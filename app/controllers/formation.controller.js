@@ -11,6 +11,7 @@ exports.create = (req, res) => {
     }
     console.log('req formation :: ', req.body);
     const formationData = {
+        trainer: req.body.trainer,
         statut: req.body.statut,
         title: req.body.title,
         description: req.body.description,
@@ -89,6 +90,7 @@ exports.update = (req, res) => {
     }
     const idFormation = req.params.id;
     const formationData = {
+        trainer: req.body.trainer,
         statut: req.body.statut,
         title: req.body.title,
         description: req.body.description,
