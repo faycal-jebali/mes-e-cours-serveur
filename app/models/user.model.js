@@ -22,7 +22,8 @@ const UserSchema = mongoose.Schema({
         password: String,
     },
     createdate: Date,
-    role: Array
+    role: Array,
+    attached: Array,
 });
 
 module.exports = mongoose.model('User', UserSchema);

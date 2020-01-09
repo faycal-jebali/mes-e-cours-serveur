@@ -10,6 +10,9 @@ module.exports = (app) => {
     // Retrieve a single User with userId
     app.get('/api/users/:id', users.findOne);
 
+    // Attach Training to User
+    app.put('/api/attach', users.attachTraining);
+
     // Retrieve a single User with userId
     app.get('/api/currentUser/:id', users.getCurrentUser);
 

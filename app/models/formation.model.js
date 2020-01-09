@@ -11,6 +11,7 @@ const FormationShema = mongoose.Schema({
     promotionPrice: String,
     categoriesId: String | Number,
     chapiters: Array,
+
 });
 
 module.exports = mongoose.model('Formation', FormationShema);

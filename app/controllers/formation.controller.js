@@ -110,7 +110,7 @@ exports.update = (req, res) => {
             if (!formation) {
                 return res.status(404).send({
                     success: false,
-                    message: "formation not found with id " + idFormation
+                    message: "formation not found with id " + idFormation,
                 });
             }
             res.send({

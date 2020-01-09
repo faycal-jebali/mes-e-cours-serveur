@@ -75,6 +75,65 @@ exports.findOne = (req, res) => {
         });
 };
 
+exports.attachTraining = (req, res) => {
+    // Validate Request
+    if (!req.body) {
+        return res.status(400).send({
+            message: "formation content can not be empty"
+        });
+    }
+    const idUser = req.body.user;
+    const idTraining = req.body.training;
+
+    // Find User and Attach new Training to him
+    return UserModel.findOneAndUpdate(idUser, { $push: { attached: idTraining } }, () => {
+        console.log('Training Attached succufly!!!!!!!');
+    });
+
+
+    // const idFormation = req.params.id;
+    // const formationData = {
+    //     trainer: req.body.trainer,
+    //     statut: req.body.statut,
+    //     title: req.body.title,
+    //     description: req.body.description,
+    //     price: req.body.price,
+    //     promotionPrice: req.body.promotionPrice,
+    //     categoriesId: req.body.categoriesId,
+    //     chapiters: req.body.chapiters,
+    //     buttonText: 'Button',
+    //     img: req.body.image,
+    // };
+    // Find formation and update it with the request body
+    // FormationModel.findByIdAndUpdate(
+    //         idFormation,
+    //         formationData, { new: true }
+    //     )
+    //     .then(formation => {
+    //         if (!formation) {
+    //             return res.status(404).send({
+    //                 success: false,
+    //                 message: "formation not found with id " + idFormation,
+    //             });
+    //         }
+    //         res.send({
+    //             success: true,
+    //             message: "Formation updated successfully!",
+    //             data: { id: idFormation }
+    //         });
+    //     }).catch(err => {
+    //         if (err.kind === 'ObjectId') {
+    //             return res.status(404).send({
+    //                 success: false,
+    //                 message: "formation not found with id " + idFormation
+    //             });
+    //         }
+    //         return res.status(500).send({
+    //             success: false,
+    //             message: "Error updating formation with id " + idFormation
+    //         });
+    //     });
+};
 // Find a single user with a userId
 exports.getCurrentUser = (req, res) => {
     const idUser = req.params.id;
