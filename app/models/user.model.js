@@ -24,6 +24,8 @@ const UserSchema = mongoose.Schema({
     createdate: Date,
     role: Array,
     attached: Array,
+}, {
+    timestamps: true
 });
 
 module.exports = mongoose.model('User', UserSchema);

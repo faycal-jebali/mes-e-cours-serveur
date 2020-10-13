@@ -31,7 +31,6 @@ app.use(bodyParser.urlencoded({
 
 // parse application/json
 app.use(bodyParser.json());
-require('./app/routes/note.routes.js')(app);
 require('./app/routes/user.routes.js')(app);
 require('./app/routes/formation.routes.js')(app);
 require('./app/routes/category.routes.js')(app);
@@ -61,8 +60,8 @@ mongoose.connect(dbConfig.url, {
     useNewUrlParser: true,
 }).then(() => {
     console.log("Successfully connected to the database");
-}).catch(err => {
-    console.log('Could not connect to the database. Exiting now...', err);
+}).catch(error => {
+    console.log('Could not connect to the database. Exiting now...', error);
     process.exit();
 });
 
