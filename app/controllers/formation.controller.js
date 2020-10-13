@@ -1,5 +1,5 @@
 const FormationModel = require('../models/formation.model.js');
-
+const fs = require('fs');
 // Create and Save a new Formation
 exports.create = (req, res) => {
     // Validate request
@@ -19,7 +19,7 @@ exports.create = (req, res) => {
         promotionPrice: req.body.promotionPrice,
         categoriesId: req.body.categoriesId,
         chapiters: req.body.chapiters,
-        buttonText: 'Button',
+        // buttonText: 'Button',
         img: req.body.image,
     };
     // Create a Formation
@@ -98,9 +98,10 @@ exports.update = (req, res) => {
         promotionPrice: req.body.promotionPrice,
         categoriesId: req.body.categoriesId,
         chapiters: req.body.chapiters,
-        buttonText: 'Button',
         img: req.body.image,
     };
+    // formationData.img1.data = fs.readFileSync(req.body.image);
+    // formationData.img1.contentType = 'jpg';
     // Find formation and update it with the request body
     FormationModel.findByIdAndUpdate(
             idFormation,
@@ -159,4 +160,19 @@ exports.delete = (req, res) => {
                 message: "Could not delete Formation with id " + idFormation
             });
         });
+};
+
+exports.B = (req, res) => {
+    if (!req.file) {
+        console.log("No file received");
+        return res.send({
+            success: false
+        });
+
+    } else {
+        console.log('file received successfully');
+        return res.send({
+            success: true
+        })
+    }
 };

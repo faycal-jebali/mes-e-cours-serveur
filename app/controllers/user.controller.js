@@ -1,5 +1,4 @@
 const Bcrypt = require("bcryptjs");
-
 const UserModel = require('../models/user.model.js');
 
 // Create and Save a new User
@@ -24,8 +23,6 @@ exports.create = (req, res) => {
     };
     // Create a User
     const user = new UserModel(userData);
-
-
 
     // Save User in the database
     user.save()
@@ -63,7 +60,8 @@ exports.findOne = (req, res) => {
 
             user.contact.password = '';
             res.send(user);
-        }).catch(err => {
+        })
+        .catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
                     message: "User not found with id " + idUser
@@ -86,9 +84,14 @@ exports.attachTraining = (req, res) => {
     const idTraining = req.body.training;
 
     // Find User and Attach new Training to him
-    return UserModel.findOneAndUpdate(idUser, { $push: { attached: idTraining } }, () => {
-        console.log('Training Attached succufly!!!!!!!');
-    });
+    return UserModel.findOneAndUpdate(idUser, {
+            $push: {
+                attached: idTraining
+            }
+        },
+        () => {
+            console.log('Training Attached succufly!!!!!!!');
+        });
 
 
     // const idFormation = req.params.id;
@@ -208,7 +211,9 @@ exports.delete = (req, res) => {
                     message: "User not found with id " + idUser
                 });
             }
-            res.send({ message: "User deleted successfully!" });
+            res.send({
+                message: "User deleted successfully!"
+            });
         }).catch(err => {
             if (err.kind === 'ObjectId' || err.name === 'NotFound') {
                 return res.status(404).send({
