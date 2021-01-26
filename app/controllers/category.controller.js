@@ -24,9 +24,14 @@ exports.create = (req, res) => {
     // Save category in the database
     category.save()
         .then(data => {
-            res.send(data);
+            res.send({
+                success: true,
+                message: "category added successfully!",
+                data: { id: data._id }
+            });
         }).catch(err => {
             res.status(500).send({
+                success: false,
                 message: err.message || "Some error occurred while creating the category."
             });
         });
@@ -72,6 +77,7 @@ exports.update = (req, res) => {
     // Validate Request
     if (!req.body) {
         return res.status(400).send({
+            success: false,
             message: "category content can not be empty"
         });
     }
@@ -88,17 +94,24 @@ exports.update = (req, res) => {
         .then(category => {
             if (!category) {
                 return res.status(404).send({
+                    success: false,
                     message: "category not found with id " + id
                 });
             }
-            res.send(category);
+            res.send({
+                data: { id: id },
+                success: true,
+                message: `Category ${id} updated successfully!`
+            });
         }).catch(err => {
             if (err.kind === 'ObjectId') {
                 return res.status(404).send({
+                    success: false,
                     message: "category not found with id " + id
                 });
             }
             return res.status(500).send({
+                success: false,
                 message: "Error updating category with id " + id
             });
         });
@@ -111,17 +124,23 @@ exports.delete = (req, res) => {
         .then(category => {
             if (!category) {
                 return res.status(404).send({
+                    success: false,
                     message: "category not found with id " + id
                 });
             }
-            res.send({ message: "category deleted successfully!" });
+            res.send({
+                success: true,
+                message: "category deleted successfully!"
+            });
         }).catch(err => {
             if (err.kind === 'ObjectId' || err.name === 'NotFound') {
                 return res.status(404).send({
+                    success: false,
                     message: "category not found with id " + id
                 });
             }
             return res.status(500).send({
+                success: false,
                 message: "Could not delete category with id " + id
             });
         });
