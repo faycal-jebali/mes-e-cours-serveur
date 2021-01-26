@@ -10,16 +10,20 @@ const _ = require('lodash');
 const Bcrypt = require("bcryptjs");
 // create express app
 const app = express();
+const PORT = 4000;
+const portFront = 4200;
+const DIR = './uploads';
+
 // Allow Origin Host
 app.use(cors({
     origin: `http://localhost:${portFront}`,
 }));
 
 app.use(function(request, response, next) {
-    request.setHeader('Access-Control-Allow-Origin', `http://localhost:${portFront}`);
-    request.setHeader('Access-Control-Allow-Methods', 'POST');
-    request.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
-    request.setHeader('Access-Control-Allow-Credentials', true);
+    response.setHeader('Access-Control-Allow-Origin', `http://localhost:${portFront}`);
+    response.setHeader('Access-Control-Allow-Methods', 'POST');
+    response.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+    response.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
 app.options('*', cors()); // include before other routes
@@ -38,9 +42,7 @@ require('./app/routes/category.routes.js')(app);
 const UserModel = require('./app/models/user.model.js');
 // Configuring the database
 const dbConfig = require('./config/database.config.js');
-const PORT = 4000;
-const portFront = 4200;
-const DIR = './uploads';
+
 
 let storage = multer.diskStorage({
     destination: (request, file, cb) => {
@@ -58,6 +60,7 @@ mongoose.Promise = global.Promise;
 // Connecting to the database
 mongoose.connect(dbConfig.url, {
     useNewUrlParser: true,
+    useUnifiedTopology: true,
 }).then(() => {
     console.log("Successfully connected to the database");
 }).catch(error => {
@@ -67,13 +70,13 @@ mongoose.connect(dbConfig.url, {
 
 // define a simple route
 app.get('/', (request, response) => {
-    request.json({
+    response.json({
         "message": "Welcome to E-learning App",
     });
 });
 
 app.get('/login', (request, response) => {
-    request.render('login', {
+    response.render('login', {
         title: 'Connexion',
     });
 });
@@ -128,8 +131,8 @@ app.post('/api/auth', async function(request, response) {
 });
 
 app.get('/api/mock/users', function(request, response) {
-    request.type("json");
-    request.send(getUsers());
+    response.type("json");
+    response.send(getUsers());
 });
 
 // Upload File

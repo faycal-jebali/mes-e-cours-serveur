@@ -1,0 +1,501 @@
+/**
+ * User
+ */
+[{
+        "_id": {
+            "$oid": "5d8937139a94a222b84b76e4"
+        },
+        "role": [
+            "Customer"
+        ],
+        "identity": {
+            "civility": "Monsieur",
+            "lastname": "Jebali",
+            "firstname": "Faycal",
+            "birthday": {
+                "$date": "2019-10-11T21:01:36.118Z"
+            },
+            "familysituation": "Marié"
+        },
+        "address": {
+            "country": "France",
+            "city": "Trappes",
+            "address": "5 rue des epices",
+            "zip": "78190"
+        },
+        "contact": {
+            "mobile": "012245",
+            "telephone": "+33122334455",
+            "email": "faycal.jebali1@gmail.com",
+            "password": "$2a$10$4aOuq5IbTwwOeY1nruGcmuR0SCqUn3pkMnEg26Q9ICuZ0sbdcJFo2"
+        },
+        "createdate": {
+            "$date": "2019-09-23T21:20:19.819Z"
+        },
+        "__v": 0,
+        "attached": [
+            "5",
+            "d",
+            "5d9124d58ccaf52938a8b31a",
+            "5d8d3011641d420ba414874e",
+            "5d8d3011641d420ba414874e",
+            "5d8d3011641d420ba414874e",
+            "5d8d3011641d420ba414874e",
+            "5d8d3011641d420ba414874e",
+            "5d8d3011641d420ba414874e",
+            "5d8d3011641d420ba414874e",
+            "5d8d3011641d420ba414874e"
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "5d86920dcee0d00f6443ed62"
+        },
+        "role": [
+            "admin",
+            "trainer"
+        ],
+        "identity": {
+            "civility": "Madame",
+            "lastname": "Jebali",
+            "firstname": "Mayar",
+            "birthday": {
+                "$date": "2019-10-11T21:27:46.799Z"
+            },
+            "familysituation": "Enfant"
+        },
+        "address": {
+            "country": "France",
+            "city": "Trappes",
+            "address": "5 rue des epices",
+            "zip": "78190"
+        },
+        "contact": {
+            "mobile": "0121344555",
+            "telephone": null,
+            "email": "mayar.jebali@gmail.com",
+            "password": "$2a$10$80We8WCTyozDv9MLxOdC9OVRkhQfepKOF.GuhmaaiqNktdr7SpGLC"
+        },
+        "createdate": {
+            "$date": "2019-09-21T21:11:41.089Z"
+        },
+        "__v": 0,
+        "attached": [
+            "jason bourne"
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "5da0e56b34aa542c88f2b2de"
+        },
+        "role": [
+            "Customer"
+        ],
+        "identity": {
+            "civility": "Monsieur",
+            "lastname": "Jebali",
+            "firstname": "Dorra",
+            "birthday": {
+                "$date": "2019-10-11T20:57:21.943Z"
+            },
+            "familysituation": "Mariée"
+        },
+        "address": {
+            "country": "Tunisie",
+            "city": "Trappes",
+            "address": "5 rue des epices",
+            "zip": "78190"
+        },
+        "contact": {
+            "mobile": "01222222222",
+            "telephone": null,
+            "email": "dorra.ouertani@gmail.com",
+            "password": "$2a$10$dC7O3x.qVoBWjtL3evUg/.hBMC1IJUj6SjcdLqhss25GSfEvLFkR."
+        },
+        "createdate": {
+            "$date": "2019-10-11T20:26:19.990Z"
+        },
+        "__v": 0,
+        "attached": [
+            "5d8d3011641d420ba414874e"
+        ]
+    },
+]
+
+/**
+ * Formations
+ */
+
+
+[{
+        "_id": {
+            "$oid": "5d8d3011641d420ba414874e"
+        },
+        "chapiters": [{
+                "_id": {
+                    "$oid": "5e69746ba7353e197097d0ea"
+                },
+                "title": "Chapitre 11",
+                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                "lessons": [{
+                        "_id": {
+                            "$oid": "5e69746ba7353e197097d0ec"
+                        },
+                        "title": "Cours 1",
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                        "video": "photo-1581549276522.3. Modifier un component existant.mp4"
+                    },
+                    {
+                        "_id": {
+                            "$oid": "5e69746ba7353e197097d0eb"
+                        },
+                        "title": "Cours 2",
+                        "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                        "video": "C:\\fakepath\\IMG_3003.JPG"
+                    }
+                ]
+            },
+            {
+                "_id": {
+                    "$oid": "5e69746ba7353e197097d0e8"
+                },
+                "title": "Chapitre 22",
+                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                "lessons": [{
+                    "_id": {
+                        "$oid": "5e69746ba7353e197097d0e9"
+                    },
+                    "title": "Introduction",
+                    "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                    "video": "C:\\fakepath\\IMG_3001.JPG"
+                }]
+            }
+        ],
+        "statut": "false",
+        "title": "MongoDB 5",
+        "description": "<p>Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.<\/p>",
+        "price": "150",
+        "promotionPrice": null,
+        "categoriesId": "Catégorie 3",
+        "buttonText": "Button",
+        "img": "C:\\fakepath\\Angular2.png",
+        "__v": 0,
+        "trainer": [
+            "5d8937139a94a222b84b76e4"
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "5d9124d58ccaf52938a8b31a"
+        },
+        "chapiters": [{
+            "title": "sdsdsd",
+            "description": "sdsd",
+            "lessons": [{
+                "title": "sdsdsd",
+                "description": "sdsdsd",
+                "video": "C:\\fakepath\\IMG_3006.JPG"
+            }]
+        }],
+        "statut": "false",
+        "title": "Faycal Formation",
+        "description": "<p>hggf gfgf gffg<\/p>",
+        "price": "120",
+        "promotionPrice": null,
+        "categoriesId": "Catégorie 3",
+        "buttonText": "Button",
+        "img": "",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5d9bac5ec403f9267c639f6b"
+        },
+        "chapiters": [{
+                "title": "Ch 1",
+                "description": null,
+                "lessons": [{
+                        "title": "c 1",
+                        "description": "",
+                        "video": ""
+                    },
+                    {
+                        "title": "c3",
+                        "description": "",
+                        "video": ""
+                    }
+                ]
+            },
+            {
+                "title": "Ch 3",
+                "description": null,
+                "lessons": [{
+                    "title": "c6",
+                    "description": "",
+                    "video": ""
+                }]
+            }
+        ],
+        "statut": "false",
+        "title": "Formation 4",
+        "description": "<p>sdsdsd sdd sd sd ssdsdds sdsdsdssdsds s sdssss ssss ddddd<\/p>",
+        "price": "150",
+        "promotionPrice": null,
+        "categoriesId": "Catégorie 3",
+        "buttonText": "Button",
+        "img": "",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5d7d8430a4d64529b8c5e1b7"
+        },
+        "chapiters": [{
+            "title": "Introduction et Histoire",
+            "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+            "lessons": [{
+                "title": "Introduction",
+                "description": "Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression.",
+                "video": "C:\\fakepath\\Eric-Ries-The-Lean-Startup.jpg"
+            }]
+        }],
+        "statut": "false",
+        "title": "Angular 6",
+        "description": "<h2>Qu'est-ce que le Lorem Ipsum?<\/h2><p>Le <strong>Lorem Ipsum<\/strong> est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500, quand un imprimeur anonyme assembla ensemble des morceaux de texte pour réaliser un livre spécimen de polices de texte. Il n'a pas fait que survivre cinq siècles, mais s'est aussi adapté à la bureautique informatique, sans que son contenu n'en soit modifié. Il a été popularisé dans les années 1960 grâce à la vente de feuilles Letraset contenant des passages du Lorem Ipsum, et, plus récemment, par son inclusion dans des applications de mise en page de texte, comme Aldus PageMaker.<\/p><h2>Pourquoi l'utiliser?<\/h2><p>On sait depuis longtemps que travailler avec du texte lisible et contenant du sens est source de distractions, et empêche de se concentrer sur la mise en page elle-même. L'avantage du Lorem Ipsum sur un texte générique comme 'Du texte. Du texte. Du texte.' est qu'il possède une distribution de lettres plus ou moins normale, et en tout cas comparable avec celle du français standard. De nombreuses suites logicielles de mise en page ou éditeurs de sites Web ont fait du Lorem Ipsum leur faux texte par défaut, et une recherche pour 'Lorem Ipsum' vous conduira vers de nombreux sites qui n'en sont encore qu'à leur phase de construction. Plusieurs versions sont apparues avec le temps, parfois par accident, souvent intentionnellement (histoire d'y rajouter de petits clins d'oeil, voire des phrases embarassantes).<\/p>",
+        "price": "150",
+        "promotionPrice": "80",
+        "categoriesId": "5d7ac1137c213e60b8fd354f",
+        "buttonText": "Button",
+        "img": "",
+        "__v": 0,
+        "trainer": [
+            "5d8937139a94a222b84b76e4"
+        ]
+    },
+    {
+        "_id": {
+            "$oid": "5e61736d689ad921f8da9488"
+        },
+        "trainer": [
+            "5d8937139a94a222b84b76e4"
+        ],
+        "chapiters": [{
+            "title": "Chapitre 1",
+            "description": "sdddsd\nsdsd\nSDSDSD",
+            "lessons": [{
+                "title": "SDSDSSDSD",
+                "description": "SDSDD SDSDSDSDDS ",
+                "video": "C:\\fakepath\\3. Modifier un component existant.mp4"
+            }]
+        }],
+        "statut": "false",
+        "title": "Formation 5",
+        "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
+        "price": "100",
+        "promotionPrice": "55",
+        "categoriesId": "5d7ac1e57c213e60b8fd3575",
+        "img": "C:\\fakepath\\71834123_1003452806665858_4725476714463887360_n.jpg",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5e61782cea01c508b8d812ab"
+        },
+        "trainer": [
+            "5d8937139a94a222b84b76e4"
+        ],
+        "statut": "false",
+        "title": "Formation 5",
+        "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
+        "price": "100",
+        "promotionPrice": "55",
+        "categoriesId": "5d7ac1e57c213e60b8fd3575",
+        "chapiters": [{
+            "_id": {
+                "$oid": "5e61782cea01c508b8d812ac"
+            },
+            "title": "Chapitre 1",
+            "description": "sdddsd\nsdsd\nSDSDSD",
+            "lessions": []
+        }],
+        "img": "C:\\fakepath\\71834123_1003452806665858_4725476714463887360_n.jpg",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5e6178beea01c508b8d812ad"
+        },
+        "trainer": [
+            "5d8937139a94a222b84b76e4"
+        ],
+        "statut": "false",
+        "title": "Formation 5",
+        "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
+        "price": "100",
+        "promotionPrice": "55",
+        "categoriesId": "5d7ac1e57c213e60b8fd3575",
+        "chapiters": [{
+            "_id": {
+                "$oid": "5e6178beea01c508b8d812ae"
+            },
+            "title": "Chapitre 1",
+            "description": "sdddsd\nsdsd\nSDSDSD",
+            "lessions": []
+        }],
+        "img": "C:\\fakepath\\71834123_1003452806665858_4725476714463887360_n.jpg",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5e617940e091e615c0a63c8b"
+        },
+        "trainer": [
+            "5d8937139a94a222b84b76e4"
+        ],
+        "statut": "false",
+        "title": "Formation 5",
+        "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
+        "price": "100",
+        "promotionPrice": "55",
+        "categoriesId": "5d7ac1e57c213e60b8fd3575",
+        "chapiters": [{
+            "_id": {
+                "$oid": "5e617940e091e615c0a63c8c"
+            },
+            "title": "Chapitre 1",
+            "description": "sdddsd\nsdsd\nSDSDSD",
+            "lessions": []
+        }],
+        "img": "C:\\fakepath\\71834123_1003452806665858_4725476714463887360_n.jpg",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5e6179da9b75971cb0c815d0"
+        },
+        "trainer": [
+            "5d8937139a94a222b84b76e4"
+        ],
+        "statut": "false",
+        "title": "Formation 6",
+        "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
+        "price": "100",
+        "promotionPrice": "55",
+        "categoriesId": "5d7ac1e57c213e60b8fd3575",
+        "chapiters": [{
+            "_id": {
+                "$oid": "5e6179da9b75971cb0c815d1"
+            },
+            "title": "Chapitre 1",
+            "description": "sdddsd\nsdsd\nSDSDSD",
+            "lessions": []
+        }],
+        "img": "C:\\fakepath\\71834123_1003452806665858_4725476714463887360_n.jpg",
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5e617a008bfe441c283388dc"
+        },
+        "trainer": [
+            "5d8937139a94a222b84b76e4"
+        ],
+        "chapiters": [{
+            "title": "Chapitre 1",
+            "description": "sdddsd\nsdsd\nSDSDSD",
+            "lessons": [{
+                    "title": "Lession 1",
+                    "description": "SDSDD SDSDSDSDDS ",
+                    "video": "C:\\fakepath\\3. Modifier un component existant.mp4"
+                },
+                {
+                    "title": "Lession 2",
+                    "description": "sdsdsdsdsdsd ",
+                    "video": ""
+                }
+            ]
+        }],
+        "statut": "false",
+        "title": "Formation 6",
+        "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
+        "price": "100",
+        "promotionPrice": "55",
+        "categoriesId": "5d7ac1e57c213e60b8fd3575",
+        "img": "C:\\fakepath\\71834123_1003452806665858_4725476714463887360_n.jpg",
+        "__v": 0
+    },
+]
+
+/**
+ * categories
+ */
+[{
+        "_id": {
+            "$oid": "5d7ac1137c213e60b8fd354f"
+        },
+        "title": "Groupe Catégorie 11",
+        "description": "<p>Description Catégorie 1<\/p>",
+        "image": "",
+        "parent": []
+    },
+    {
+        "_id": {
+            "$oid": "5d7ac1e57c213e60b8fd3575"
+        },
+        "title": "Groupe Catégorie 3",
+        "description": "Description Catégorie 3",
+        "image": "",
+        "parent": []
+    },
+    {
+        "_id": {
+            "$oid": "5d7ac1477c213e60b8fd355e"
+        },
+        "title": "Groupe Catégorie 2",
+        "description": "Description Catégorie 2",
+        "image": "",
+        "parent": []
+    },
+    {
+        "_id": {
+            "$oid": "5d9a536790071724ecb3d6fc"
+        },
+        "parent": [
+            "5d7ac1477c213e60b8fd355e"
+        ],
+        "title": "Categorie 4",
+        "description": "<p>Le <strong>Lorem Ipsum<\/strong> est simplement du faux texte employé dans la composition et la mise en page avant impression.&nbsp;<\/p><p>Le <strong>Lorem Ipsum<\/strong> est simplement du faux texte employé dans la composition et la mise en page avant impression.&nbsp;<\/p>",
+        "createdate": {
+            "$date": "2019-10-06T20:49:43.410Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5d9a54286074ea1ba08a814c"
+        },
+        "parent": [
+            "5d7ac1137c213e60b8fd354f"
+        ],
+        "title": "Categorie 5",
+        "description": "<p>Le <strong>Lorem Ipsum<\/strong> est simplement du faux texte employé dans la composition et la mise en page avant impression.&nbsp;<\/p>",
+        "createdate": {
+            "$date": "2019-10-06T20:52:56.959Z"
+        },
+        "__v": 0
+    },
+    {
+        "_id": {
+            "$oid": "5d9a554c6074ea1ba08a814d"
+        },
+        "parent": [
+            "5d7ac1e57c213e60b8fd3575"
+        ],
+        "title": "Categorie 6",
+        "description": "<p>Le <strong>Lorem Ipsum<\/strong> est simplement du faux texte employé dans la composition et la mise en page avant impression.&nbsp;<\/p>",
+        "createdate": {
+            "$date": "2019-10-06T20:57:48.979Z"
+        },
+        "__v": 0
+    },
+]
