@@ -123,7 +123,7 @@
 ]
 
 /**
- * Formations
+ * courses
  */
 
 
@@ -198,7 +198,7 @@
             }]
         }],
         "statut": "false",
-        "title": "Faycal Formation",
+        "title": "Faycal Course",
         "description": "<p>hggf gfgf gffg<\/p>",
         "price": "120",
         "promotionPrice": null,
@@ -237,7 +237,7 @@
             }
         ],
         "statut": "false",
-        "title": "Formation 4",
+        "title": "Course 4",
         "description": "<p>sdsdsd sdd sd sd ssdsdds sdsdsdssdsds s sdssss ssss ddddd<\/p>",
         "price": "150",
         "promotionPrice": null,
@@ -289,7 +289,7 @@
             }]
         }],
         "statut": "false",
-        "title": "Formation 5",
+        "title": "Course 5",
         "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
         "price": "100",
         "promotionPrice": "55",
@@ -305,7 +305,7 @@
             "5d8937139a94a222b84b76e4"
         ],
         "statut": "false",
-        "title": "Formation 5",
+        "title": "Course 5",
         "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
         "price": "100",
         "promotionPrice": "55",
@@ -329,7 +329,7 @@
             "5d8937139a94a222b84b76e4"
         ],
         "statut": "false",
-        "title": "Formation 5",
+        "title": "Course 5",
         "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
         "price": "100",
         "promotionPrice": "55",
@@ -353,7 +353,7 @@
             "5d8937139a94a222b84b76e4"
         ],
         "statut": "false",
-        "title": "Formation 5",
+        "title": "Course 5",
         "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
         "price": "100",
         "promotionPrice": "55",
@@ -377,7 +377,7 @@
             "5d8937139a94a222b84b76e4"
         ],
         "statut": "false",
-        "title": "Formation 6",
+        "title": "Course 6",
         "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
         "price": "100",
         "promotionPrice": "55",
@@ -416,7 +416,7 @@
             ]
         }],
         "statut": "false",
-        "title": "Formation 6",
+        "title": "Course 6",
         "description": "<p>sdsdsdd &nbsp;dddddd sddsdsdd ssdsssdsd sdsdsddsd sdsdsdsdsdsd sssss sddsdddd dddddd.;)<\/p>",
         "price": "100",
         "promotionPrice": "55",
