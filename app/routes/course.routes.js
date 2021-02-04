@@ -1,3 +1,4 @@
+const jwtfn = require("./../utils/jwtfn.ts");
 module.exports = (app) => {
   const courses = require("../controllers/course.controller.js");
   const multer = require("multer");
@@ -17,19 +18,19 @@ module.exports = (app) => {
   let upload = multer({ storage: storage });
 
   // Create a new Course
-  app.post("/api/courses", courses.create);
+  app.post("/api/courses", jwtfn.authenticateJWT, courses.create);
 
   // Retrieve all courses
-  app.get("/api/courses", courses.findAll);
+  app.get("/api/courses", jwtfn.authenticateJWT, courses.findAll);
 
   // Retrieve a single Course with id
-  app.get("/api/courses/:id", courses.findOne);
+  app.get("/api/courses/:id", jwtfn.authenticateJWT, courses.findOne);
 
   // Update a Course with id
-  app.put("/api/courses/:id", courses.update);
+  app.put("/api/courses/:id", jwtfn.authenticateJWT, courses.update);
 
   // Delete a Course with id
-  app.delete("/api/courses/:id", courses.delete);
+  app.delete("/api/courses/:id", jwtfn.authenticateJWT, courses.delete);
 
   // Upload
   // app.post('/api/courses/upload', upload.single('uploaded'), courses.upload);

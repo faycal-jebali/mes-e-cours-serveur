@@ -10,7 +10,7 @@ const _ = require("lodash");
 const Bcrypt = require("bcryptjs");
 // create express app
 const app = express();
-const PORT = 4000;
+const PORT = 5100;
 const portFront = 4200;
 const DIR = "./uploads";
 
@@ -107,7 +107,7 @@ function checkAuth(email, password) {
   });
 }
 
-const secret =
+const accessTokenSecret =
   "qsdjS12ozehdoIJ123DJOZJLDSCqsdeffdg123ER56SDFZedhWXojqshduzaohduihqsDAqsdq";
 
 app.post("/api/auth", async function (request, response) {
@@ -131,8 +131,9 @@ app.post("/api/auth", async function (request, response) {
     var token = jwt.sign(
       {
         userID: user._id,
+        Role: user.role,
       },
-      secret,
+      accessTokenSecret,
       {
         expiresIn: "2h",
       }
@@ -144,11 +145,6 @@ app.post("/api/auth", async function (request, response) {
   } catch (error) {
     request.status(500).send(error);
   }
-});
-
-app.get("/api/mock/users", function (request, response) {
-  response.type("json");
-  response.send(getUsers());
 });
 
 // Upload File
