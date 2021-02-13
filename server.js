@@ -131,13 +131,18 @@ app.post("/api/auth", async function (request, response) {
     var token = jwt.sign(
       {
         userID: user._id,
-        Role: user.role,
+        role: user.role,
       },
       accessTokenSecret,
       {
         expiresIn: "2h",
       }
     );
+
+    // const refreshToken = jwt.sign(
+    //   { userID: user._id, role: user.role },
+    //   refreshTokenSecret
+    // );
     response.send({
       token: token,
       userData: user,

@@ -46,8 +46,23 @@ exports.create = (req, res) => {
 
 // Retrieve and return all courses from the database.
 exports.findAll = (req, res) => {
+  const { Role } = req.user;
+  console.log("req.user :: ", req.user);
+  console.log("role:: ", Role);
+  let authorized;
+  if (Role && !Role.includes("admin")) {
+    authorized = false;
+    // return res.sendStatus(403);
+  } else {
+    authorized = true;
+  }
   FormationModel.find()
     .then((courses) => {
+      // Restrict display product for no authorized
+      if (!authorized) {
+        courses.map((item) => (item.chapiters = []));
+      }
+      console.log("courses  :: ", courses);
       res.send(courses);
     })
     .catch((err) => {
