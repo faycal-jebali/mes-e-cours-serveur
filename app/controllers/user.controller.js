@@ -39,6 +39,7 @@ exports.create = (req, res) => {
 
 // Retrieve and return all users from the database.
 exports.findAll = (req, res) => {
+  console.log("restiction data :: ", req.restrictionData);
   UserModel.find()
     .then((users) => {
       res.send(users);
