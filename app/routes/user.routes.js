@@ -2,7 +2,12 @@ const users = require("../controllers/user.controller.js");
 const jwtfn = require("../utils/jwtfn.ts");
 module.exports = (app) => {
   // Create a new User
-  app.post("/api/users", jwtfn.authenticateJWT, users.create);
+  app.post(
+    "/api/users",
+    jwtfn.authenticateJWT(true),
+    jwtfn.minimumPermissionLevelRequired("Api_users", "post"),
+    users.create
+  );
   // Retrieve all Users
   app.get(
     "/api/users",
@@ -14,19 +19,35 @@ module.exports = (app) => {
   app.get(
     "/api/users/:id",
     jwtfn.authenticateJWT(true),
-    jwtfn.minimumPermissionLevelRequired("Api_users", "getAll"),
+    jwtfn.minimumPermissionLevelRequired("Api_users", "getOne"),
     users.findOne
   );
-  // Attach Training to User
-  app.put("/api/attach", jwtfn.authenticateJWT(true), users.attachTraining);
-  // Retrieve a single User with userId
+  // Retrieve Current User with userId
   app.get(
     "/api/currentUser/:id",
     jwtfn.authenticateJWT(true),
+    jwtfn.minimumPermissionLevelRequired("Api_users", "getOne"),
     users.getCurrentUser
   );
   // Update a User with userId
-  app.put("/api/users/:id", jwtfn.authenticateJWT(true), users.update);
+  app.put(
+    "/api/users/:id",
+    jwtfn.authenticateJWT(true),
+    jwtfn.minimumPermissionLevelRequired("Api_users", "put"),
+    users.update
+  );
   // Delete a User with userId
-  app.delete("/api/users/:id", jwtfn.authenticateJWT(true), users.delete);
+  app.delete(
+    "/api/users/:id",
+    jwtfn.authenticateJWT(true),
+    jwtfn.minimumPermissionLevelRequired("Api_users", "delete"),
+    users.delete
+  );
+  // Attach Training to User
+  app.put(
+    "/api/attach",
+    jwtfn.authenticateJWT(true),
+    jwtfn.minimumPermissionLevelRequired("Api_users", "attach"),
+    users.attachTraining
+  );
 };

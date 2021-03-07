@@ -11,6 +11,7 @@ module.exports = {
         "post",
         "put",
         "delete",
+        "attach",
       ],
       Api_courses: ["getAll", "getOne", "post", "put", "delete"],
       Api_categories: ["getAll", "getOne", "post", "put", "delete"],
