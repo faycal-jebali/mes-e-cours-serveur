@@ -46,20 +46,16 @@ exports.create = (req, res) => {
 
 // Retrieve and return all courses from the database.
 exports.findAll = (req, res) => {
+  console.log("restiction data :: ", req.restrictionData);
+
   const { Role } = req.user;
   console.log("req.user :: ", req.user);
   console.log("role:: ", Role);
-  let authorized;
-  if (Role && !Role.includes("admin")) {
-    authorized = false;
-    // return res.sendStatus(403);
-  } else {
-    authorized = true;
-  }
+
   FormationModel.find()
     .then((courses) => {
       // Restrict display product for no authorized
-      if (!authorized) {
+      if (req.restrictionData) {
         courses.map((item) => (item.chapiters = []));
       }
       console.log("courses  :: ", courses);
@@ -75,6 +71,7 @@ exports.findAll = (req, res) => {
 
 // Find a single course with a id
 exports.findOne = (req, res) => {
+  console.log("restiction data :: ", req.restrictionData);
   const idCourse = req.params.id;
   FormationModel.findById(idCourse)
     .then((course) => {
@@ -83,6 +80,9 @@ exports.findOne = (req, res) => {
           success: false,
           message: "course not found with id " + idCourse,
         });
+      }
+      if (req.restrictionData) {
+        course.chapiters = [];
       }
       res.send(course);
     })

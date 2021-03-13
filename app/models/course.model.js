@@ -14,7 +14,6 @@ const formationshema = mongoose.Schema({
   statut: String,
   title: String,
   description: String,
-  buttonText: String,
   img: String,
   price: String,
   promotionPrice: String,
